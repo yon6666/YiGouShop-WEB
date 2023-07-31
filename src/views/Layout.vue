@@ -1,5 +1,5 @@
 <template>
-<nav>111</nav>
+<AppTopnav/>
 
 <header>2222</header>
 
@@ -12,9 +12,10 @@
 </template>
 
 <script>
+import AppTopnav from '@/components/app-topnav'
 export default {
-    name: 'Layout'
-
+    name: 'Layout',
+    components: { AppTopnav }
 }
 </script>
 
