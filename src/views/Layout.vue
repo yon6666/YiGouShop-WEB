@@ -1,21 +1,20 @@
 <template>
-<nav>111</nav>
+    <AppTopnav/>
+    <AppHeader/>
+    <main>
+      <!-- 二级路由 -->
+      <router-view></router-view>
+    </main>
+    <footer>底部</footer>
+  </template>
 
-<header>2222</header>
+  <script>
+  import AppTopnav from '@/components/app-topnav.vue'
+  import AppHeader from '@/components/app-header.vue'
+  export default {
+    name: 'XtxLayout',
+   components: { AppTopnav, AppHeader }
+  }
+  </script>
 
-<div class="main">
-    <router-view></router-view>
-</div>
-
-<footer>4444</footer>
-
-</template>
-
-<script>
-export default {
-    name: 'Layout'
-
-}
-</script>
-
-<style scoped lang="less"></style>
+  <style scoped lang='less'></style>
