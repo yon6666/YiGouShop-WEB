@@ -1,22 +1,29 @@
 <template>
-<AppTopnav/>
+    <AppTopnav/>
+    <AppHeader/>
+    <appHeaderSticky></appHeaderSticky>
+    <main style="height: 500px;">
+      <!-- 二级路由 -->
+      <router-view></router-view>
+    </main>
+    <AppFooter/>
+  </template>
 
-<header>2222</header>
+  <script>
+  import AppTopnav from '@/components/app-topnav.vue'
+  import AppHeader from '@/components/app-header.vue'
+  import { useStore } from 'vuex'
+  import AppFooter from '@/components/app-footer.vue'
+  import appHeaderSticky from '@/components/app-header-sticky.vue'
+  export default {
+    name: 'XtxLayout',
+   components: { AppTopnav, AppHeader, AppFooter, appHeaderSticky },
+   setup () {
+    const store = useStore()
+    store.dispatch('category/getCategory')
+  }
+  }
 
-<div class="main">
-    <router-view></router-view>
-</div>
+  </script>
 
-<footer>4444</footer>
-
-</template>
-
-<script>
-import AppTopnav from '@/components/app-topnav'
-export default {
-    name: 'Layout',
-    components: { AppTopnav }
-}
-</script>
-
-<style scoped lang="less"></style>
+  <style scoped lang='less'></style>

@@ -1,23 +1,18 @@
 <template>
-    <div class="container">
-        Homepage
-        <div class="redbox">
-            111
+    <div class="page-home">
+      <div class="home-entry">
+        <div class="container">
+          <!-- 左侧分类 -->
+          <HomeCategory />
         </div>
+      </div>
     </div>
-
-</template>
-
-<script>
-export default {
-    name: 'HomePage'
-}
-</script>
-
-<style scoped lang="less">
-// @import '../../assets/styles/mixins.less';
-.container {
-   .hoverShadow();
-
-}
-</style>
+  </template>
+  <script>
+  import HomeCategory from './components/home-category'
+  export default {
+    name: 'PageHome',
+    components: { HomeCategory }
+  }
+  </script>
+  <style scoped lang="less"></style>
