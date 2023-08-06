@@ -2,7 +2,7 @@
     <AppTopnav/>
     <AppHeader/>
     <appHeaderSticky></appHeaderSticky>
-    <main style="height: 500px;">
+    <main style="height: 800px;">
       <!-- 二级路由 -->
       <router-view></router-view>
     </main>
