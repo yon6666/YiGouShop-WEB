@@ -1,22 +1,22 @@
 <template>
     <div class="home-product" ref="target">
-      <HomePanel :title="item.name" v-for="item in list" :key="item.id">
+      <HomePanel :title="cate .name" v-for="cate  in list" :key="cate .id">
         <template v-slot:right>
           <div class="sub">
-            <RouterLink v-for="sub in item.children" :key="sub.id" to="/">{{sub.name}}</RouterLink>
+            <RouterLink v-for="sub in cate .children" :key="sub.id" to="/">{{sub.name}}</RouterLink>
           </div>
           <XtxMore />
         </template>
         <div class="box">
           <RouterLink class="cover" to="/">
-            <img :src="item.picture" alt="">
+            <img :src="cate .picture" alt="">
             <strong class="label">
-              <span>{{item.name}}馆</span>
-              <span>{{item.saleInfo}}</span>
+              <span>{{cate .name}}馆</span>
+              <span>{{cate .saleInfo}}</span>
             </strong>
           </RouterLink>
           <ul class="goods-list">
-            <li v-for="goods in item.goods" :key="goods.id">
+            <li v-for="item in cate .goods" :key="item.id">
               <HomeGoods :goods="item" />
             </li>
           </ul>

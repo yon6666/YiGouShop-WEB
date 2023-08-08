@@ -8,5 +8,13 @@ export default {
       app.component(XtxSkeleton.name, XtxSkeleton)
       app.component(XtxCarousel.name, XtxCarousel)
       app.component(XtxMore.name, XtxMore)
+
+      defineDirective(app)
     }
+  }
+
+  const defineDirective = app => {
+    app.directive('lazy', {
+
+    })
   }

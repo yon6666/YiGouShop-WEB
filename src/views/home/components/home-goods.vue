@@ -1,11 +1,11 @@
 <template>
     <div class="goods-item">
       <RouterLink to="/" class="image">
-        <img :src="item.picture" alt="" />
+        <img :src="goods.picture" alt="" />
       </RouterLink>
-      <p class="name ellipsis-2">{{item.name}}</p>
-      <p class="desc">海鲜年货</p>
-      <p class="price">&yen;108.00</p>
+      <p class="name ellipsis-2">{{goods.name}}</p>
+      <p class="desc">{{goods.tag}}</p>
+      <p class="price">&yen;{{goods.price}}</p>
       <div class="extra">
         <RouterLink to="/">
           <span>找相似</span>
@@ -17,7 +17,14 @@
 
   <script>
 export default {
-  name: 'HomeGoods'
+  name: 'HomeGoods',
+  props: {
+    goods: {
+      type: Object,
+      default: () => {
+      }
+    }
+  }
 }
 </script>
 
