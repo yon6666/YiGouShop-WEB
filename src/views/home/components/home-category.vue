@@ -22,7 +22,7 @@
     <div class="layer">
       <h4>{{currCategory&&currCategory.id==='brand'?'品牌':'分类'}}推荐 <small>根据您的购买或浏览记录推荐</small></h4>
       <!-- 商品 -->
-      <ul v-if="currCategory && currCategory.goods && currCategory.goods.length">
+      <ul v-if="currCategory && currCategory.goods">
         <li v-for="item in currCategory.goods" :key="item.id">
           <RouterLink to="/">
             <img :src="item.picture" alt="">
@@ -88,7 +88,7 @@ export default {
     })
 
     // 获取品牌数据，尽量不用使用async再setup上
-    findBrand().then(data => {
+    findBrand(6).then(data => {
       brand.brands = data.result
     })
 

@@ -1,11 +1,13 @@
 <template>
     <AppTopnav/>
     <AppHeader/>
-    <appHeaderSticky></appHeaderSticky>
-    <main style="height: 800px;">
+    <appHeaderSticky/>
+
+    <div class="app-body">
       <!-- 二级路由 -->
-      <router-view></router-view>
-    </main>
+      <RouterView />
+    </div>
+
     <AppFooter/>
   </template>
 
