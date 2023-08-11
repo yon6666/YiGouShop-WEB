@@ -32,7 +32,7 @@ export default {
 
 const defineDirective = (app) => {
   // 图片懒加载指令 v-lazyload
-  app.directive('lazyload', {
+  app.directive('lazy', {
     // vue2.0 inserted函数，元素渲染后
     // vue3.0 mounted函数，元素渲染后
     mounted (el, binding) {
