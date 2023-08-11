@@ -9,7 +9,7 @@
         <!-- 轮播图 -->
         <XtxCarousel :sliders="sliders" style="height:500px" />
         <!-- 所有二级分类 -->
-        <div class="sub-list">
+        <div class="sub-list"  v-if=" topCategory && topCategory.children">
           <h3>全部分类</h3>
           <ul>
             <li v-for="item in topCategory.children" :key="item.id">
@@ -20,7 +20,18 @@
             </li>
           </ul>
         </div>
-        <!-- 不同分类商品 -->
+              <!-- 分类关联商品 -->
+                <!-- 分类关联商品 -->
+            <div class="ref-goods" v-for="item in subList" :key="item.id">
+              <div class="head">
+                <h3>{{item.name}}</h3>
+                <p class="tag">{{item.desc}}</p>
+                <XtxMore />
+              </div>
+              <div class="body">
+                <GoodsItem v-for="g in item.goods" :key="g.id"  :goods="g"/>
+              </div>
+            </div>
       </div>
     </div>
   </template>
@@ -29,10 +40,13 @@ import { findBanner } from '@/api/home'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
+import { findTopCategory } from '@/api/category'
+import GoodsItem from './components/goods-item'
 export default {
-
     name: 'TopCategory',
-
+    components: {
+      GoodsItem
+    },
     setup () {
         const sliders = ref([])
         findBanner().then(data => {
@@ -44,14 +58,17 @@ export default {
             const topCategory = computed(() => {
                 let cate = {}
                 const item = store.state.category.list.find(item => {
-        return item.id === route.params.id
+                return item.id === route.params.id
             })
       if (item) cate = item
       return cate
         })
-
+        const subList = ref([])
+        findTopCategory(route.params.id).then(data => {
+          subList.value = data.result.children
+        })
         return {
-            sliders, topCategory
+            sliders, topCategory, subList
         }
     }
 
@@ -95,4 +112,30 @@ export default {
     }
   }
 }
+
+.ref-goods {
+    background-color: #fff;
+    margin-top: 20px;
+    position: relative;
+    .head {
+      .xtx-more {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+      .tag {
+        text-align: center;
+        color: #999;
+        font-size: 20px;
+        position: relative;
+        top: -20px;
+      }
+    }
+    .body {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      padding: 0 65px 30px;
+    }
+  }
 </style>
