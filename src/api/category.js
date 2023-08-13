@@ -5,5 +5,5 @@ export const findAllCategory = () => {
 }
 
 export const findTopCategory = (id) => {
-    return request('/home/category/head', 'get')
+    return request('/category', 'get', { id })
 }
