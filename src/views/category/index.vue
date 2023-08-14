@@ -2,15 +2,9 @@
     <div class="top-category">
       <div class="container">
         <!-- 面包屑 -->
-        <XtxBread>
-          <XtxBreadItem to="/">首页</XtxBreadItem>
 
-          <transition name="fade-right" mode="out-in">
-          <XtxBreadItem :key="topCategory.id">{{topCategory.name}}</XtxBreadItem>
-        </transition>
-        </XtxBread>
         <!-- 轮播图 -->
-        <XtxCarousel :sliders="sliders" style="height:500px" />
+        <XtxCarousel :sliders="sliders"  autoPlay style="height:500px" />
         <!-- 所有二级分类 -->
         <div class="sub-list"  v-if=" topCategory && topCategory.children">
           <h3>全部分类</h3>
@@ -74,7 +68,7 @@ export default {
       })
     }
     watch(() => route.params.id, (newVal) => {
-      newVal && getSubList()
+      if (newVal && `/category/${newVal}` === route.path) getSubList()
     }, { immediate: true })
 
         return {

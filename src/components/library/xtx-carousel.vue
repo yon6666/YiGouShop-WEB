@@ -48,11 +48,9 @@ export default {
       }, props.duration)
     }
     const stop = () => {
-      console.log('stop')
       if (timer) clearInterval(timer)
     }
     const start = () => {
-      console.log('start')
       if (props.sliders.length && props.autoPlay) {
         autoPlayFn()
       }

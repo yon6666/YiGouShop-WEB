@@ -7,3 +7,7 @@ export const findAllCategory = () => {
 export const findTopCategory = (id) => {
     return request('/category', 'get', { id })
 }
+
+export const findTopCategoryFilter = (id) => {
+    return request('/category/sub/filter', 'get', { id })
+}
