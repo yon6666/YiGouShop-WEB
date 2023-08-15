@@ -2,8 +2,12 @@
     <div class="top-category">
       <div class="container">
         <!-- 面包屑 -->
-
-        <!-- 轮播图 -->
+        <XtxBread>
+        <XtxBreadItem to="/">首页</XtxBreadItem>
+        <Transition name="fade-right" mode="out-in">
+          <XtxBreadItem :key="topCategory.id">{{topCategory.name}}</XtxBreadItem>
+        </Transition>
+      </XtxBread>
         <XtxCarousel :sliders="sliders"  autoPlay style="height:500px" />
         <!-- 所有二级分类 -->
         <div class="sub-list"  v-if=" topCategory && topCategory.children">
