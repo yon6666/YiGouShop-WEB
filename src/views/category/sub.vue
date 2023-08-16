@@ -72,7 +72,22 @@
           }
         }
       })
-      return { loading, finished, getData, goodsList }
+
+      const filterChange = (filterParams) => {
+          reqParams = { ...reqParams, ...filterParams }
+          reqParams.page = 1
+          goodsList.value = []
+          finished.value = false
+          console.log(reqParams)
+      }
+      const sortChange = (sortParams) => {
+        finished.value = false
+        reqParams = { ...reqParams, ...sortParams }
+          reqParams.page = 1
+          goodsList.value = []
+          console.log(reqParams)
+      }
+      return { loading, finished, getData, goodsList, filterChange, sortChange }
     }
   }
   </script>

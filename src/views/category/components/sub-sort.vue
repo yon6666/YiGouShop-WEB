@@ -12,8 +12,8 @@
         </a>
       </div>
       <div class="check">
-        <XtxCheckbox v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
-        <XtxCheckbox v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
+        <XtxCheckbox @change="changeCheck" v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
+        <XtxCheckbox @change="changeCheck" v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
       </div>
     </div>
   </template>
@@ -21,7 +21,7 @@
 import { reactive } from 'vue'
   export default {
     name: 'SubSort',
-    setup () {
+    setup (props, { emit }) {
         const sortParams = reactive({
             inventory: false,
             onlyDiscount: false,
@@ -45,9 +45,13 @@ import { reactive } from 'vue'
                     sortParams.sortField = sortField
                     sortParams.sortMethod = null
                 }
+                emit('sort-change', sortParams)
             }
 
-            return { sortParams, changeSort }
+            const changeCheck = () => {
+            emit('sort-change', sortParams)
+          }
+            return { sortParams, changeSort, changeCheck }
         }
 
     }
