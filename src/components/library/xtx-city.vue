@@ -1,27 +1,49 @@
 <template>
     <div class="xtx-city" ref="target">
-      <div class="select" @click="toggleDialog" :class="{active}">
-        <span class="placeholder">请选择配送地址</span>
-        <span class="value"></span>
+      <div class="select" @click="toggleDialog()" :class="{active}">
+        <span v-if="!fullLocation" class="placeholder">请选择配送地址</span>
+        <span v-else class="value">{{fullLocation}}</span>
         <i class="iconfont icon-angle-down"></i>
       </div>
       <div class="option" v-if="active">
-        <span class="ellipsis" v-for="i in 24" :key="i">北京市</span>
+        <div v-if="loading" class="loading"> </div>
+        <template v-else>
+          <span @click="changeItem(item)" class="ellipsis"  v-for="item in currList" :key="item.code">{{ item.name }}</span>
+        </template>
+
       </div>
     </div>
   </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import axios from 'axios'
 export default {
   name: 'XtxCity',
-  setup () {
+  props: {
+    fullLocation: {
+      type: String,
+      default: ''
+    }
+  },
+  setup (props, { emit }) {
+    const allCityData = ref([])
+    const loading = ref(false)
     // 控制展开收起,默认收起
     const active = ref(false)
     const openDialog = () => {
       active.value = true
+      loading.value = true
+      getCityData().then(res => {
+        allCityData.value = res
+        loading.value = false
+      })
+      for (const key in changeResult) {
+        changeResult[key] = ''
+      }
     }
+
     const closeDialog = () => {
       active.value = false
     }
@@ -35,9 +57,67 @@ export default {
     onClickOutside(target, () => {
       closeDialog()
     })
-    return { active, toggleDialog, target }
+
+    const currList = computed(() => {
+      let currList = allCityData.value
+      // 城市
+      if (changeResult.provinceCode && changeResult.provinceName) {
+            currList = currList.find(p => p.code === changeResult.provinceCode).areaList
+          }
+          // 地区
+          if (changeResult.cityCode && changeResult.cityName) {
+            currList = currList.find(c => c.code === changeResult.cityCode).areaList
+          }
+          return currList
+        })
+
+    const changeResult = reactive({
+      provinceCode: '',
+      provinceName: '',
+      cityCode: '',
+      cityName: '',
+      countyCode: '',
+      countyName: '',
+      fullLocation: ''
+    })
+    const changeItem = (item) => {
+      // 省份
+      if (item.level === 0) {
+        changeResult.provinceCode = item.code
+        changeResult.provinceName = item.name
+      }
+      // 市
+      if (item.level === 1) {
+        changeResult.cityCode = item.code
+        changeResult.cityName = item.name
+      }
+      if (item.level === 2) {
+        changeResult.countyCode = item.code
+        changeResult.countyName = item.name
+        closeDialog()
+      }
+      changeResult.fullLocation = `${changeResult.provinceName} ${changeResult.cityName} ${changeResult.countyName}`
+
+      emit('change', changeResult)
+    }
+    return { active, toggleDialog, target, currList, loading, changeItem }
   }
 }
+
+const getCityData = () => {
+ return new Promise((resolve, reject) => {
+  if (window.cityData) {
+    resolve(window.cityData)
+  } else {
+    const url = 'https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json'
+    axios.get(url).then(res => {
+      window.cityData = res.data
+      resolve(window.cityData)
+    })
+  }
+})
+}
+
 </script>
 
 <style scoped lang="less">
@@ -88,6 +168,12 @@ export default {
         background: #f5f5f5;
       }
     }
+    .loading {
+      height: 290px;
+      width: 100%;
+      background: url(../../assets/images/loading.gif) no-repeat center;
+    }
+
   }
 }
 </style>
