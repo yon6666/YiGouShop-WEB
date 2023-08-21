@@ -16,7 +16,8 @@
         </div>
         <div class="spec">
           <GoodsName :goods="goods"/>
-          <GoodsSku :goods="goods" />
+          <GoodsSku :goods="goods"  @change="changeSku" />
+          <XtxNumbox  label="数量" v-model="num" :max="goods.inventory"></XtxNumbox >
         </div>
       </div>
         <!-- 商品推荐 -->
@@ -49,8 +50,17 @@ import GoodsSku from './components/goods-sku'
     name: 'XtxGoodsPage',
     components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku },
     setup () {
+      const num = ref(1)
       const goods = useGoods()
-      return { goods }
+      const changeSku = (sku) => {
+      if (sku.skuId) {
+        goods.value.price = sku.price
+        goods.value.oldPrice = sku.oldPrice
+        goods.value.inventory = sku.inventory
+      }
+    }
+
+      return { goods, changeSku, num }
     }
   }
 
