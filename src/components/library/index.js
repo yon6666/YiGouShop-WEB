@@ -6,9 +6,9 @@
 // import XtxBread from './xtx-bread.vue'
 // import XtxBreadItem from './xtx-bread-item.vue'
 
-const importFn = require.context('./', false, /\.vue$/)
 // console.dir(importFn.keys()) 文件名称数组
-
+import Message from './Message'
+const importFn = require.context('./', false, /\.vue$/)
 export default {
   install (app) {
     // app.component(XtxSkeleton.name, XtxSkeleton)
@@ -27,6 +27,9 @@ export default {
 
     // 定义指令
     defineDirective(app)
+
+    //
+    app.config.globalProperties.$message = Message
   }
 }
 

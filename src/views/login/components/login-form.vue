@@ -8,48 +8,52 @@
           <i class="iconfont icon-msg"></i> 使用短信登录
         </a>
       </div>
-      <div class="form">
+      <Form ref="formCom" class="form"  :validation-schema="schema"  autocomplete="off" v-slot="{errors}">
         <template v-if="!isMsgLogin">
           <div class="form-item">
             <div class="input">
               <i class="iconfont icon-user"></i>
-              <input type="text" placeholder="请输入用户名或手机号" />
+              <Field :class="{error:errors.account}" v-model="form.account" name="account" type="text" placeholder="请输入用户名或手机号" />
             </div>
-            <!-- <div class="error"><i class="iconfont icon-warning" />请输入手机号</div> -->
+            <div class="error" v-if="errors.account"><i class="iconfont icon-warning" />{{errors.account}}</div>
           </div>
           <div class="form-item">
             <div class="input">
               <i class="iconfont icon-lock"></i>
-              <input type="password" placeholder="请输入密码">
+              <Field :class="{error:errors.password}" v-model="form.password" name="password" type="password" placeholder="请输入密码" />
             </div>
+            <div class="error" v-if="errors.password"><i class="iconfont icon-warning" />{{errors.password}}</div>
           </div>
         </template>
         <template v-else>
           <div class="form-item">
             <div class="input">
               <i class="iconfont icon-user"></i>
-              <input type="text" placeholder="请输入手机号" />
+              <Field v-model="form.mobile" name="mobile" type="text" placeholder="请输入手机号" />
             </div>
+            <div class="error" v-if="errors.mobile"><i class="iconfont icon-warning" />{{errors.mobile}}</div>
           </div>
           <div class="form-item">
             <div class="input">
               <i class="iconfont icon-code"></i>
-              <input type="password" placeholder="请输入验证码">
-              <span class="code">发送验证码</span>
+              <Field :class="{error:errors.code}" v-model="form.code" name="code" type="password" placeholder="请输入验证码"/>
+              <span @click="send()"  class="code">{{time===0?'发送验证码':`${time}秒后发送`}}</span>
             </div>
+            <div class="error" v-if="errors.code"><i class="iconfont icon-warning" />{{errors.code}}</div>
           </div>
         </template>
         <div class="form-item">
           <div class="agree">
-            <XtxCheckbox v-model="form.isAgree" />
+            <Field  as='XtxCheckbox' name="isAgree" v-model="form.isAgree" />
             <span>我已同意</span>
             <a href="javascript:;">《隐私条款》</a>
             <span>和</span>
             <a href="javascript:;">《服务条款》</a>
           </div>
+          <div class="error" v-if="errors.isAgree"><i class="iconfont icon-warning" />{{errors.isAgree}}</div>
         </div>
-        <a href="javascript:;" class="btn">登录</a>
-      </div>
+        <a @click="login()" href="javascript:;" class="btn">登录</a>
+      </Form>
       <div class="action">
         <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="">
         <div class="url">
@@ -61,18 +65,99 @@
   </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch, onUnmounted } from 'vue'
+import { Form, Field } from 'vee-validate'
+import schema from '@/utils/vee-validate-schema'
+import Message from '@/components/library/Message'
+import { userAccountLogin, userMobileLoginMsg } from '@/api/user'
+import { useStore } from 'vuex'
+import { useRoute, useRouter } from 'vue-router'
+import { useIntervalFn } from '@vueuse/core'
 export default {
   name: 'LoginForm',
+  components: {
+    Form, Field
+  },
   setup () {
     const isMsgLogin = ref(false)
 
     const form = reactive({
-      isAgree: true
+      isAgree: true,
+      account: null,
+      password: null,
+      mobile: null,
+      code: null
     })
 
+    // 校验规则对象
+    const mySchema = {
+      account: schema.account,
+      password: schema.password,
+      mobile: schema.mobile,
+      code: schema.code,
+      isAgree: schema.isAgree
+    }
+
+// 切换表单元素，还原数据和清除校验效果
+      const formCom = ref(null)
+      watch(isMsgLogin, () => {
+      // 还原数据
+      form.isAgree = true
+      form.account = null
+      form.password = null
+      form.mobile = null
+      form.code = null
+      // 补充校验效果清除，Form组件提供resetForm()
+      // formCom.value.resetForm()
+    })
+    const store = useStore()
+    const router = useRouter()
+    const route = useRoute()
+    const login = async () => {
+      const valid = await formCom.value.validate()
+        if (valid) {
+          if (isMsgLogin.value) {
+
+          } else {
+            const { account, password } = form
+          userAccountLogin({ account, password }).then(data => {
+            const { id, account, nickname, avatar, token, mobile } = data.result
+            store.commit('user/setUser', { id, account, nickname, avatar, token, mobile })
+            Message({ type: 'success', text: '登录成功' })
+            router.push(route.query.redirectUrl || '/')
+          }).catch(err => {
+            Message({ type: 'error', text: err.response.data.message || '登录失败' })
+          })
+          }
+        }
+    }
+    const time = ref(0)
+    const { pause, resume } = useIntervalFn(() => {
+      time.value--
+      if (time.value <= 0) {
+        pause()
+      }
+    }, 1000, false)
+
+    onUnmounted(() => {
+      pause()
+    })
+
+    const send = async () => {
+      const valid = mySchema.mobile(form.mobile)
+      if (valid === true) {
+        if (time.value === 0) {
+          await userMobileLoginMsg(form.mobile)
+          Message({ type: 'success', text: '发送成功' })
+          time.value = 60
+          resume()
+        }
+      } else {
+        formCom.value.setFieldError('mobile', valid)
+      }
+    }
     return {
-      isMsgLogin, form
+      isMsgLogin, form, schema: mySchema, login, formCom, send, time
     }
   }
 }
