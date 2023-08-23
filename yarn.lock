@@ -7794,6 +7794,11 @@
   "resolved" "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
   "version" "1.5.1"
 
+"qc@^0.0.1":
+  "integrity" "sha512-Jcw6+lvBSBTURqWoCqbxuqk/I/XivEQD7AwiI/5QJvbNj9VdG5a43oJCs1mcpB7GzpvmCU6Jw+5l2pKjBwUoXA=="
+  "resolved" "https://registry.npmjs.org/qc/-/qc-0.0.1.tgz"
+  "version" "0.0.1"
+
 "qs@^6.11.0":
   "integrity" "sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.11.2.tgz"

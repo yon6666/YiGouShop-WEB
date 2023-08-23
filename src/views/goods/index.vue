@@ -18,27 +18,31 @@
           <GoodsName :goods="goods"/>
           <GoodsSku :goods="goods"  @change="changeSku" />
           <XtxNumbox  label="数量" v-model="num" :max="goods.inventory"></XtxNumbox >
+          <XtxButton type="primary" size="middle" style="margin-top:20px;">加入购物车</XtxButton>
         </div>
       </div>
         <!-- 商品推荐 -->
-        <GoodsRelevant />
+        <GoodsRelevant :goodsId="goods.id"/>
         <!-- 商品详情 -->
         <div class="goods-footer">
           <div class="goods-article">
             <!-- 商品+评价 -->
-            <div class="goods-tabs"></div>
+            <GoodsTabs :goods="goods"></GoodsTabs>
             <!-- 注意事项 -->
             <div class="goods-warn"></div>
           </div>
           <!-- 24热榜+专题推荐 -->
-          <div class="goods-aside"></div>
-        </div>
+          <div class="goods-aside">
+          <GoodsHot :goodsId="goods.id" :type="1" />
+          <GoodsHot :goodsId="goods.id" :type="2" />
+          </div>
       </div>
     </div>
+  </div>
   </template>
 
   <script>
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import { findGoods } from '@/api/product'
 import GoodsRelevant from './components/goods-relevant'
@@ -46,9 +50,11 @@ import GoodsImage from './components/goods-image'
 import GoodsSales from './components/goods-sales'
 import GoodsName from './components/goods-name'
 import GoodsSku from './components/goods-sku'
+import GoodsTabs from './components/goods-tabs'
+import GoodsHot from './components/goods-hot'
   export default {
     name: 'XtxGoodsPage',
-    components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku },
+    components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot },
     setup () {
       const num = ref(1)
       const goods = useGoods()
@@ -59,7 +65,7 @@ import GoodsSku from './components/goods-sku'
         goods.value.inventory = sku.inventory
       }
     }
-
+    provide('goods', goods)
       return { goods, changeSku, num }
     }
   }
@@ -96,10 +102,7 @@ import GoodsSku from './components/goods-sku'
       min-height: 1000px;
     }
   }
-  .goods-tabs {
-    min-height: 600px;
-    background: #fff;
-  }
+
   .goods-warn {
     min-height: 600px;
     background: #fff;
