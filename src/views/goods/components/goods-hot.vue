@@ -33,13 +33,10 @@ export default {
 
       const goodsList = ref([])
       findHotGoods(props.id, props.type).then(data => {
-        console.log(data.result)
-
         goodsList.value = data.result.map(item => {
             item.tag = item.desc
             return item
         })
-        console.log(goodsList.value)
       })
       return { title, goodsList }
   }

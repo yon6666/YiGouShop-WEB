@@ -29,7 +29,9 @@
             <!-- 商品+评价 -->
             <GoodsTabs :goods="goods"></GoodsTabs>
             <!-- 注意事项 -->
-            <div class="goods-warn"></div>
+            <div class="goods-warn">
+              <GoodsWarn/>
+            </div>
           </div>
           <!-- 24热榜+专题推荐 -->
           <div class="goods-aside">
@@ -52,9 +54,10 @@ import GoodsName from './components/goods-name'
 import GoodsSku from './components/goods-sku'
 import GoodsTabs from './components/goods-tabs'
 import GoodsHot from './components/goods-hot'
+import GoodsWarn from './components/goods-warn'
   export default {
     name: 'XtxGoodsPage',
-    components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot },
+    components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot, GoodsWarn },
     setup () {
       const num = ref(1)
       const goods = useGoods()
@@ -65,7 +68,7 @@ import GoodsHot from './components/goods-hot'
         goods.value.inventory = sku.inventory
       }
     }
-    provide('goods', goods)
+      provide('goods', goods)
       return { goods, changeSku, num }
     }
   }
@@ -80,7 +83,7 @@ import GoodsHot from './components/goods-hot'
             nextTick(() => {
               goods.value = data.result
             })
-       console.log(data.result)
+      console.log(goods)
           })
         }
       }, { immediate: true })

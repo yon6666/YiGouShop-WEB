@@ -11,3 +11,18 @@ export const findRelGoods = (id, limit = 16) => {
   export const findHotGoods = (id, type, limit = 3) => {
     return request('/goods/hot', 'get', { id, type, limit })
   }
+
+  export const findCommentInfoByGoods = (id) => {
+ //   return request(`/goods/${id}/evaluate`)
+   return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate`, 'get')
+  }
+/**
+ *
+ * 查询商品评价列表
+ * @param {String} id - 商品ID
+ * @param {Object} params - 商品ID
+ * @returns
+ */
+export const findGoodsCommentList = (id, params) => {
+  return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate/page`, 'get', params)
+}
