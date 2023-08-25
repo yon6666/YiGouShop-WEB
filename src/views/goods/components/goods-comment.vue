@@ -58,6 +58,7 @@
             <span class="attr">{{formatSpecs(item.orderInfo.specs)}}</span>
           </div>
           <div class="text">{{item.content}}</div>
+          <GoodsCommentImage v-if="item.pictures.length" :pictures="item.pictures" />
           <div class="time">
             <span>{{item.createTime}}</span>
             <span class="zan"><i class="iconfont icon-dianzan"></i> {{item.praiseCount}}</span>
@@ -71,9 +72,10 @@
 <script>
 import { findCommentInfoByGoods, findGoodsCommentInfo } from '@/api/product'
 import { reactive, ref, watch } from 'vue'
-
+import GoodsCommentImage from './goods-comment-image'
 export default {
   name: 'GoodsComment',
+  components: { GoodsCommentImage },
   props: {
     goods: {
       type: Object,
@@ -110,16 +112,12 @@ export default {
   return commentInfo
 }
         // 初始化或者筛选条件改变后，获取列表数据。
-    const commentList = ref([])
-    watch(reqParams, async () => {
-      const data = await findGoodsCommentInfo(props.goods.id, reqParams)
-      commentList.value = data.result.items
-    }, { immediate: true })
 
     const changeSort = (type) => {
         reqParams.sortField = type
          reqParams.page = 1
       }
+
     const commentInfo = getCommentInfo(props)
     const currTagIndex = ref(0)
     const changeTag = (i) => {
@@ -137,6 +135,13 @@ export default {
       }
       reqParams.page = 1
     }
+
+    const commentList = ref([])
+    watch(reqParams, async () => {
+      const data = await findGoodsCommentInfo(props.goods.id, reqParams)
+      commentList.value = data.result.items
+    }, { immediate: true })
+
     const formatSpecs = (specs) => {
       return specs.reduce((p, c) => `${p} ${c.name}：${c.nameValue}`, '').trim()
     }
