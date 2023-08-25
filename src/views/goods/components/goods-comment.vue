@@ -69,19 +69,9 @@
 </div>
 </template>
 <script>
-import { findCommentInfoByGoods, findGoodsCommentList } from '@/api/product'
+import { findCommentInfoByGoods, findGoodsCommentInfo } from '@/api/product'
 import { reactive, ref, watch } from 'vue'
-const getCommentInfo = (props) => {
-  const commentInfo = ref(null)
-  findCommentInfoByGoods(props.goods.id).then(data => {
-    console.log(data)
-    // type 的目的是将来点击可以区分点的是不是标签
-    data.result.tags.unshift({ type: 'img', title: '有图', tagCount: data.result.hasPictureCount })
-    data.result.tags.unshift({ type: 'all', title: '全部评价', tagCount: data.result.evaluateCount })
-    commentInfo.value = data.result
-  })
-  return commentInfo
-}
+
 export default {
   name: 'GoodsComment',
   props: {
@@ -100,10 +90,29 @@ export default {
       sortField: null
     })
 
+    const getCommentInfo = (props) => {
+  const commentInfo = ref(null)
+  findCommentInfoByGoods(props.goods.id).then(data => {
+    console.log(data)
+    // type 的目的是将来点击可以区分点的是不是标签
+    data.result.tags.unshift({
+        title: '有图',
+        tagCount: data.result.hasPictureCount,
+        type: 'img'
+      })
+      data.result.tags.unshift({
+        title: '全部评价',
+        tagCount: data.result.evaluateCount,
+        type: 'all'
+      })
+    commentInfo.value = data.result
+  })
+  return commentInfo
+}
         // 初始化或者筛选条件改变后，获取列表数据。
     const commentList = ref([])
     watch(reqParams, async () => {
-      const data = await findGoodsCommentList(props.goods.id, reqParams)
+      const data = await findGoodsCommentInfo(props.goods.id, reqParams)
       commentList.value = data.result.items
     }, { immediate: true })
 

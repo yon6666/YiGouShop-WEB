@@ -23,6 +23,6 @@ export const findRelGoods = (id, limit = 16) => {
  * @param {Object} params - 商品ID
  * @returns
  */
-export const findGoodsCommentList = (id, params) => {
+export const findGoodsCommentInfo = (id, params) => {
   return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate/page`, 'get', params)
 }

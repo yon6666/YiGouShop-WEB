@@ -13,7 +13,7 @@
         >
         </nav>
         <!-- 切换内容的地方 -->
-        <component  :is="'goods-'+activeName"></component>
+        <component :goods="goods" :is="'goods-'+activeName"></component>
     </div>
 </template>
 
