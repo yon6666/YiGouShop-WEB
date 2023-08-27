@@ -13,7 +13,7 @@
     "core-js": "^3.6.5",
     "normalize.css": "^8.0.1",
     "qc": "^0.0.1",
-    "vee-validate": "^4.0.3",
+    "vee-validate": "^4.11.3",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",

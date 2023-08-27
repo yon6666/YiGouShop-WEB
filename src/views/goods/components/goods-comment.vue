@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-
+    <XtxPagination @current-change="changePager" :total="total" :current-page="reqParams.page"  />
 </div>
 </template>
 <script>
@@ -137,9 +137,11 @@ export default {
     }
 
     const commentList = ref([])
+    const total = ref(0)
     watch(reqParams, async () => {
       const data = await findGoodsCommentInfo(props.goods.id, reqParams)
       commentList.value = data.result.items
+      total.value = data.result.counts
     }, { immediate: true })
 
     const formatSpecs = (specs) => {
@@ -148,7 +150,11 @@ export default {
     const formatNickname = (nickname) => {
       return nickname.substr(0, 1) + '****' + nickname.substr(-1)
     }
-    return { commentInfo, currTagIndex, changeTag, reqParams, commentList, changeSort, formatSpecs, formatNickname }
+
+    const changePager = (np) => {
+      reqParams.page = np
+    }
+    return { commentInfo, currTagIndex, changeTag, reqParams, commentList, changeSort, formatSpecs, formatNickname, changePager, total }
   }
 }
 

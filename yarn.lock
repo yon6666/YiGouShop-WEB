@@ -9234,6 +9234,11 @@
   "resolved" "https://registry.npmjs.org/type-fest/-/type-fest-0.8.1.tgz"
   "version" "0.8.1"
 
+"type-fest@^4.2.0":
+  "integrity" "sha512-5zknd7Dss75pMSED270A1RQS3KloqRJA9XbXLe0eCxyw7xXFb3rd+9B0UQ/0E+LQT6lnrLviEolYORlRWamn4w=="
+  "resolved" "https://registry.npmjs.org/type-fest/-/type-fest-4.2.0.tgz"
+  "version" "4.2.0"
+
 "type-is@~1.6.18":
   "integrity" "sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g=="
   "resolved" "https://registry.npmjs.org/type-is/-/type-is-1.6.18.tgz"
@@ -9519,10 +9524,13 @@
   "resolved" "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   "version" "1.1.2"
 
-"vee-validate@^4.0.3":
-  "integrity" "sha512-Ovk5+rNCnwZDQuRcCcq8claqJNNerBauKzCBD3bDoGBWqoLwAfo7rakr4p/jJs5WB4qpCyxjuycZMZJhuUNA/g=="
-  "resolved" "https://registry.npmjs.org/vee-validate/-/vee-validate-4.0.3.tgz"
-  "version" "4.0.3"
+"vee-validate@^4.11.3":
+  "integrity" "sha512-YhWORdZRE1GL6vXKj3r9f+Y8fJH5JMwMUJ4DFS44+WcTtiNXggyE3pyJPlZBqS9AgYGZ47EOv4UczkLxHqufiw=="
+  "resolved" "https://registry.npmjs.org/vee-validate/-/vee-validate-4.11.3.tgz"
+  "version" "4.11.3"
+  dependencies:
+    "@vue/devtools-api" "^6.5.0"
+    "type-fest" "^4.2.0"
 
 "vendors@^1.0.0":
   "integrity" "sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w=="
@@ -9611,7 +9619,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@*", "vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.2.0", "vue@3.3.4":
+"vue@*", "vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.2.0", "vue@^3.3.4", "vue@3.3.4":
   "integrity" "sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"
   "version" "3.3.4"
