@@ -32,7 +32,7 @@
                     <div>
                       <p class="name ellipsis">{{item.name}}</p>
                       <!-- 选择规格组件 -->
-                      <p class="attr">{{item.attrsText}}</p>
+                      <CartSku :attrs-text="item.attrsText" :skuId="item.skuId" />
                     </div>
                   </div>
                 </td>
@@ -103,9 +103,10 @@
   import CartNone from './components/cart-none.vue'
   import Message from '@/components/library/Message'
   import confirm from '@/components/library/confirm.js'
+  import CartSku from './components/cart-sku'
   export default {
     name: 'XtxCartPage',
-    components: { GoodRelevant, CartNone },
+    components: { GoodRelevant, CartNone, CartSku },
     setup () {
     const store = useStore()
     // 单选

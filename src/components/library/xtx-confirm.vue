@@ -3,7 +3,7 @@
       <div class="wrapper" :class="{fade}">
         <div class="header">
           <h3>{{title}}</h3>
-          <a @click="cancelCallback()" href="JavaScript:;" class="iconfont icon-close-new"></a>
+          <a @click="cancel()" href="JavaScript:;" class="iconfont icon-close-new"></a>
         </div>
         <div class="body">
           <i class="iconfont icon-warning"></i>
