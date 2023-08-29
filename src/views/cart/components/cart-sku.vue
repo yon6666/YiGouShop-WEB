@@ -6,7 +6,7 @@
       </div>
       <div class="layer"  v-if="visible">
         <div v-if="!goods" class="loading"></div>
-        <GoodsSku v-if="goods" :skuId="skuId" :goods="goods"></GoodsSku>
+        <GoodsSku v-else :skuId="skuId" :goods="goods"></GoodsSku>
         <XtxButton v-if="goods" type="primary" size="mini" style="margin-left:60px">确认</XtxButton>
       </div>
     </div>
@@ -35,7 +35,7 @@
         const show = () => {
             visible.value = true
             getSpecsAndSkus(props.skuId).then(data => {
-                goods.value = data.result
+              goods.value = data.result
             })
         }
         const hide = () => {
