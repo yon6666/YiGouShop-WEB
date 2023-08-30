@@ -32,7 +32,7 @@
                     <div>
                       <p class="name ellipsis">{{item.name}}</p>
                       <!-- 选择规格组件 -->
-                      <CartSku :attrs-text="item.attrsText" :skuId="item.skuId" />
+                      <CartSku @change="$event=>updateCartSku(item.skuId,$event)" :attrs-text="item.attrsText" :skuId="item.skuId" />
                     </div>
                   </div>
                 </td>
@@ -131,7 +131,10 @@
     const changeCount = (skuId, count) => {
       store.dispatch('cart/updateCart', { skuId, count })
     }
-      return { checkOne, checkAll, deleteCart, batchDeleteCart, changeCount }
+    const updateCartSku = (oldSkuId, newSku) => {
+      store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
+    }
+      return { checkOne, checkAll, deleteCart, batchDeleteCart, changeCount, updateCartSku }
     }
   }
   </script>

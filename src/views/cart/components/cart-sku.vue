@@ -6,8 +6,8 @@
       </div>
       <div class="layer"  v-if="visible">
         <div v-if="!goods" class="loading"></div>
-        <GoodsSku v-else :skuId="skuId" :goods="goods"></GoodsSku>
-        <XtxButton v-if="goods" type="primary" size="mini" style="margin-left:60px">确认</XtxButton>
+        <GoodsSku @change="changeSku" v-else :skuId="skuId" :goods="goods"></GoodsSku>
+        <XtxButton  v-if="goods" :skuId="skuId" :goods="goods" type="primary" size="mini" @click="submit">确认</XtxButton>
       </div>
     </div>
   </template>
@@ -29,7 +29,7 @@
         default: ''
       }
     },
-    setup (props) {
+    setup (props, { emit }) {
         const visible = ref(false)
         const goods = ref(null)
         const show = () => {
@@ -49,8 +49,18 @@
         onClickOutside(target, () => {
             hide()
         })
+        const currSku = ref(null)
+        const changeSku = (sku) => {
+          currSku.value = sku
+        }
+        const submit = () => {
+          if (currSku.value && currSku.value.skuId && currSku.value.skuId !== props.skuId) {
+            emit('change', currSku.value)
+            hide()
+          }
+        }
         return {
-            visible, toggle, target, goods
+            visible, toggle, target, goods, changeSku, submit
         }
     }
   }

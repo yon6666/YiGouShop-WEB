@@ -44,7 +44,7 @@
         </template>
         <div class="form-item">
           <div class="agree">
-            <Field  as='XtxCheckbox' name="isAgree" v-model="form.isAgree" />
+            <Field as="XtxCheckbox" name="isAgree" v-model="form.isAgree" />
             <span>我已同意</span>
             <a href="javascript:;">《隐私条款》</a>
             <span>和</span>
@@ -111,14 +111,16 @@ export default {
       form.mobile = null
       form.code = null
       // 补充校验效果清除，Form组件提供resetForm()
-      // formCom.value.resetForm()
+      formCom.value.resetForm()
     })
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
     const login = async () => {
       const valid = await formCom.value.validate()
-        if (valid) {
+      console.log(valid)
+        if (valid.results.isAgree) {
+          console.log('jiazia')
           if (isMsgLogin.value) {
 
           } else {
@@ -126,8 +128,10 @@ export default {
           userAccountLogin({ account, password }).then(data => {
             const { id, account, nickname, avatar, token, mobile } = data.result
             store.commit('user/setUser', { id, account, nickname, avatar, token, mobile })
-            Message({ type: 'success', text: '登录成功' })
+            store.dispatch('cart/mergeLocalCart').then(() => {
+              Message({ type: 'success', text: '登录成功' })
             router.push(route.query.redirectUrl || '/')
+            })
           }).catch(err => {
             Message({ type: 'error', text: err.response.data.message || '登录失败' })
           })
