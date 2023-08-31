@@ -1,4 +1,4 @@
-import { getNewCartGoods, mergeLocalCart, findCartList, insertCart, deleteCart } from '@/api/cart'
+import { getNewCartGoods, mergeLocalCart, findCartList, insertCart, deleteCart, updateCart, checkAllCart } from '@/api/cart'
 
 export default {
     namespaced: true,
@@ -38,7 +38,12 @@ export default {
           return new Promise((resolve, reject) => {
             if (ctx.rootState.user.profile.token) {
               // 已登录 TODO
-
+              checkAllCart({ selected, ids: ctx.getters.validList.map(item => item.skuId) }).then(() => {
+                return findCartList()
+              }).then((data) => {
+                            ctx.commit('setCartList', data.result)
+                            resolve()
+              })
             } else {
               // 未登录
               ctx.getters.validList.forEach(item => {
@@ -93,7 +98,7 @@ export default {
         deleteCart (ctx, skuId) {
           return new Promise((resolve, reject) => {
             if (ctx.rootState.user.profile.token) {
-              deleteCart(skuId).then(() => {
+              deleteCart([skuId]).then(() => {
                 return findCartList()
               }).then((data) => {
                 ctx.commit('setCartList', data.result)
@@ -108,6 +113,12 @@ export default {
     updateCart (ctx, goods) {
       return new Promise((resolve, reject) => {
         if (ctx.rootState.user.profile.token) {
+          updateCart(goods).then(() => {
+            return findCartList()
+          }).then((data) => {
+            ctx.commit('setCartList', data.result)
+            resolve()
+          })
           // 已登录 TODO
         } else {
           // 未登录
@@ -119,6 +130,13 @@ export default {
     batchDeleteCart (ctx, isClear) {
       return new Promise((resolve, reject) => {
         if (ctx.rootState.user.profile.token) {
+          const ids = ctx.getters[isClear ? 'invalidList' : 'selectedList'].map(item => item.skuId)
+          deleteCart(ids).then(() => {
+            return findCartList()
+          }).then((data) => {
+            ctx.commit('setCartList', data.result)
+            resolve()
+          })
         } else {
           // 未登录
           ctx.getters[isClear ? 'invalidList' : 'selectedList'].forEach(item => {
