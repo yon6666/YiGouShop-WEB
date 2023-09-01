@@ -149,6 +149,15 @@ export default {
     updateCartSku (ctx, { oldSkuId, newSku }) {
       return new Promise((resolve, reject) => {
         if (ctx.rootState.user.profile.token) {
+          const oldGoods = ctx.state.list.find(item => item.skuId === oldSkuId)
+          deleteCart([oldSkuId]).then(() => {
+            return insertCart({ skuId: newSku.skuId, count: oldGoods.count })
+          }).then(() => {
+            return findCartList()
+          }).then((data) => {
+            ctx.commit('setCartList', data.result)
+            resolve()
+          })
           // 已登录 TODO
         } else {
           // 未登录

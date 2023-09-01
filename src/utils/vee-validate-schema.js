@@ -5,7 +5,7 @@ export default {
   account (value) {
     if (!value) return '请输入用户名'
     // 规则：字母开头6-20字符之间
-    if (!/^[a-zA-Z]\w{5,19}$/.test(value)) return '字母开头且6-20个字符'
+    if (!/^[a-zA-Z]\w{3,19}$/.test(value)) return '字母开头且3-20个字符'
     return true
   },
   // 用户校验且校验唯一性

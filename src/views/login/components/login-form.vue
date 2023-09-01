@@ -44,7 +44,7 @@
         </template>
         <div class="form-item">
           <div class="agree">
-            <Field as="XtxCheckbox" name="isAgree" v-model="form.isAgree" />
+            <Field as="XtxCheckbox" name="isAgree" v-model:checked="form.isAgree"/>
             <span>我已同意</span>
             <a href="javascript:;">《隐私条款》</a>
             <span>和</span>
@@ -75,7 +75,6 @@ import { userAccountLogin, userMobileLoginMsg } from '@/api/user'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useIntervalFn } from '@vueuse/core'
-
 export default {
   name: 'LoginForm',
   components: {
@@ -85,7 +84,7 @@ export default {
     const isMsgLogin = ref(false)
 
     const form = reactive({
-      isAgree: true,
+      isAgree: false,
       account: null,
       password: null,
       mobile: null,
@@ -118,25 +117,45 @@ export default {
     const route = useRoute()
     const login = async () => {
       const valid = await formCom.value.validate()
+      console.log(formCom)
       console.log(valid)
-        if (valid.results.isAgree) {
-          console.log('jiazia')
+      if (valid) {
+        try {
+          let data = null
           if (isMsgLogin.value) {
-
+            // **手机号登录
+            // 2.1. 准备一个API做手机号登录
+            // 2.2. 调用API函数
+            // 2.3. 成功：存储用户信息 + 跳转至来源页或者首页 + 消息提示
+            // 2.4. 失败：消息提示
+            const { mobile, code } = form
+            data = await userMobileLoginMsg({ mobile, code })
           } else {
+            // **帐号登录
+            // 1. 准备一个API做帐号登录
+            // 2. 调用API函数
+            // 3. 成功：存储用户信息 + 跳转至来源页或者首页 + 消息提示
+            // 4. 失败：消息提示
             const { account, password } = form
-          userAccountLogin({ account, password }).then(data => {
-            const { id, account, nickname, avatar, token, mobile } = data.result
-            store.commit('user/setUser', { id, account, nickname, avatar, token, mobile })
-            store.dispatch('cart/mergeLocalCart').then(() => {
-              Message({ type: 'success', text: '登录成功' })
+            data = await userAccountLogin({ account, password })
+          }
+          // 存储用户信息
+          const { id, account, avatar, mobile, nickname, token } = data.result
+          store.commit('user/setUser', { id, account, avatar, mobile, nickname, token })
+          store.dispatch('cart/mergeLocalCart').then(() => {
+            // 进行跳转
             router.push(route.query.redirectUrl || '/')
-            })
-          }).catch(err => {
-            Message({ type: 'error', text: err.response.data.message || '登录失败' })
+            // 成功消息提示
+            Message({ type: 'success', text: '登录成功' })
           })
+        } catch (e) {
+          // 失败提示
+          if (e.response.data) {
+            // console.log(e.response.data.message)
+            Message({ type: 'error', text: e.response.data.message || '登录失败' })
           }
         }
+      }
     }
     const time = ref(0)
     const { pause, resume } = useIntervalFn(() => {
@@ -168,6 +187,7 @@ export default {
     //    btnId: 'qqLoginBtn'
     //   })
     // })
+
     return {
       isMsgLogin, form, schema: mySchema, login, formCom, send, time
     }
