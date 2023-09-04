@@ -8,7 +8,7 @@
 
 // console.dir(importFn.keys()) 文件名称数组
 import Message from './Message'
-import confirm from './confirm'
+import Confirm from './Confirm'
 const importFn = require.context('./', false, /\.vue$/)
 export default {
   install (app) {
@@ -31,7 +31,7 @@ export default {
 
     //
     app.config.globalProperties.$message = Message
-    app.config.globalProperties.$confirm = confirm
+    app.config.globalProperties.$confirm = Confirm
   }
 }
 

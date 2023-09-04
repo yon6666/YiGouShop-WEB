@@ -102,7 +102,7 @@
   import { useStore } from 'vuex'
   import CartNone from './components/cart-none.vue'
   import Message from '@/components/library/Message'
-  import confirm from '@/components/library/confirm.js'
+  import confirm from '@/components/library/Confirm.js'
   import CartSku from './components/cart-sku'
   import { useRouter } from 'vue-router'
   export default {
@@ -143,10 +143,10 @@
       }
       if (!store.state.user.profile.token) {
         confirm({ text: '亲，您还没有登录' }).then(() => {
-          router.push('/member/checkout')
+          router.push('/login')
         })
       } else {
-        router.push('/member/checkout')
+        router.push('/member/pay/checkout')
       }
     }
       return { checkOne, checkAll, deleteCart, batchDeleteCart, changeCount, updateCartSku, goCheckOut }
