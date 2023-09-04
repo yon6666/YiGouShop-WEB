@@ -9,7 +9,7 @@
           <table>
             <thead>
               <tr>
-                <th width="120"><XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']">全选</XtxCheckbox></th>
+                <th width="120"><XtxCheckbox @change="checkAll" :checked="$store.getters['cart/isCheckAll']">全选</XtxCheckbox></th>
                 <th width="400">商品信息</th>
                 <th width="220">单价</th>
                 <th width="180">数量</th>
@@ -25,7 +25,7 @@
               </td>
             </tr>
               <tr v-for="item in $store.getters['cart/validList']" :key="item.skuId">
-                <td><XtxCheckbox :modelValue="item.selected" @change="$event => checkOne(item.skuId,$event)"/></td>
+                <td><XtxCheckbox :checked="item.selected" @change="$event => checkOne(item.skuId,$event)"/></td>
                 <td>
                   <div class="goods">
                     <RouterLink to="`/product/${item.id}`"><img :src="item.picture" alt=""></RouterLink>
