@@ -3,9 +3,9 @@
       <div class="wrapper" :class="{fade}">
         <div class="header">
           <h3>{{title}}</h3>
-          <a href="JavaScript:;" class="iconfont icon-close-new"></a>
+          <a href="JavaScript:;" class="iconfont icon-close-new" @click="close"></a>
         </div>
-        <div class="body">
+        <div class="body" style="height:300px;">
           <slot />
         </div>
         <div class="footer">
@@ -73,6 +73,7 @@
       .body {
         padding: 20px 40px;
         font-size: 16px;
+        overflow: scroll;
         .icon-warning {
           color: @priceColor;
           margin-right: 3px;

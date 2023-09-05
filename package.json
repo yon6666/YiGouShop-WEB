@@ -11,6 +11,7 @@
     "@vueuse/core": "^4.9.0",
     "axios": "^1.4.0",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.9",
     "normalize.css": "^8.0.1",
     "qc": "^0.0.1",
     "vee-validate": "^4.0.3",

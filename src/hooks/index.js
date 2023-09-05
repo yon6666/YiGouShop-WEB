@@ -1,5 +1,6 @@
-import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { useIntersectionObserver, useIntervalFn } from '@vueuse/core'
+import { ref, onUnmounted } from 'vue'
+import dayjs from 'dayjs'
 export const useLazyData = (apiFn) => {
     const target = ref(null)
     const result = ref([])
@@ -16,4 +17,29 @@ export const useLazyData = (apiFn) => {
       }
     )
     return { target, result }
+}
+
+export const usePayTime = () => {
+  const time = ref(0)
+  const timeText = ref('')
+  const { pause, resume } = useIntervalFn(() => {
+    time.value--
+    timeText.value = dayjs.unix(time.value).format('mm分ss秒')
+    if (time.value <= 0) {
+      pause()
+    }
+  }, 1000, false)
+  onUnmounted(() => {
+    pause()
+  })
+  const start = (countdown) => {
+    time.value = countdown
+    timeText.value = dayjs.unix(time.value).format('mm分ss秒')
+    resume()
+  }
+
+  return {
+    start,
+    timeText
+  }
 }

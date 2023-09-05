@@ -7,14 +7,14 @@
           <li><span>联系方式：</span>{{showAddress.contact}}</li>
           <li><span>收货地址：</span>{{showAddress.fullLocation.replace(/ /g,'')+showAddress.address}}</li>
         </ul>
-        <a href="javascript:;">修改地址</a>
+        <a @click="openAddressEdit(showAddress)" v-if="showAddress" href="javascript:;">修改地址</a>
       </div>
       <div class="action">
         <XtxButton @click="openDialog()" class="btn">切换地址</XtxButton>
         <XtxButton @click="openAddressEdit({})" class="btn">添加地址</XtxButton>
       </div>
     </div>
-    <XtxDialog title="切换收货地址" v-model:visible="dialogVisible">
+    <XtxDialog  title="切换收货地址" v-model:visible="dialogVisible">
     <div class="text item" v-for="item in list" :key="item.id"
         :class="{active:selectedAddress&&item.id===selectedAddress.id}"
         @click="selectedAddress=item">
@@ -29,7 +29,7 @@
         <XtxButton  @click="confirmAddress()" type="primary">确认</XtxButton>
       </template>
     </XtxDialog>
-    <AddressEdit ref="addressEdit" />
+    <AddressEdit @on-success="successHandler" ref="addressEdit" />
   </template>
   <script>
   import { ref } from 'vue'
@@ -74,7 +74,28 @@
         const openAddressEdit = (address) => {
             addressEdit.value.open(address)
         }
-        return { showAddress, dialogVisible, selectedAddress, openDialog, confirmAddress, openAddressEdit, addressEdit }
+        const successHandler = (formData) => {
+        const editAddress = props.list.find(item => item.id === formData.id)
+        if (editAddress) {
+          for (const key in editAddress) {
+            editAddress[key] = formData[key]
+          }
+        } else {
+          const json = JSON.stringify(formData)
+           // eslint-disable-next-line vue/no-mutating-props
+           props.list.unshift(JSON.parse(json))
+          }
+        }
+        return {
+ showAddress,
+dialogVisible,
+selectedAddress,
+openDialog,
+          confirmAddress,
+openAddressEdit,
+addressEdit,
+successHandler
+}
     }
   }
   </script>
