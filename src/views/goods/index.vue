@@ -115,7 +115,6 @@ import Message from '@/components/library/Message'
             nextTick(() => {
               goods.value = data.result
             })
-      console.log(goods)
           })
         }
       }, { immediate: true })

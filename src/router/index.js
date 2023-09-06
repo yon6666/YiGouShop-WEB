@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import TopCategory from '@/views/category/index'
 import SubCategory from '@/views/category/sub'
 import store from '@/store'
+import { h } from 'vue'
 const Layout = () => import('@/views/Layout')
 const Home = () => import('@/views/home')
 const Goods = () => import('@/views/goods/index')
@@ -11,6 +12,10 @@ const Cart = () => import('@/views/cart/index')
 const PayCheckout = () => import('@/views/member/pay/checkout')
 const PayIndex = () => import('@/views/member/pay/index')
 const PayResult = () => import('@/views/member/pay/result')
+const MemberLayout = () => import('@/views/member/Layout')
+const MemberHome = () => import('@/views/member/home')
+const MemberOrder = () => import('@/views/member/order')
+const MemberOrderDetail = () => import('@/views/member/order/detail')
 const routes = [
   {
     path: '/',
@@ -23,7 +28,23 @@ const routes = [
     { path: '/cart', component: Cart },
     { path: '/member/pay/checkout', component: PayCheckout },
     { path: '/member/pay', component: PayIndex },
-    { path: '/pay/callback', component: PayResult }
+    { path: '/pay/callback', component: PayResult },
+    {
+              path: '/member',
+              component: MemberLayout,
+              children: [
+                { path: '/member', component: MemberHome },
+                {
+                  path: '/member/order',
+                  // 创建一个RouterView容器形成嵌套关系
+                  component: { render: () => h(<RouterView />) },
+                  children: [
+                    { path: '', component: MemberOrder },
+                    { path: ':id', component: MemberOrderDetail }
+                  ]
+                }
+              ]
+            }
     ]
 },
 { path: '/login', component: Login },

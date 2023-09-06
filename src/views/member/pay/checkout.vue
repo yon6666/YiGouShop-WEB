@@ -77,10 +77,10 @@
     </div>
   </template>
   <script>
-  import CheckoutAddress from './components/checkout-address.vue'
-  import { findCheckoutInfo, createOrder } from '@/api/order'
+import CheckoutAddress from './components/checkout-address.vue'
+import { findCheckoutInfo, createOrder } from '@/api/order'
 import Message from '@/components/library/Message'
-  import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import router from '@/router'
   export default {
     name: 'XtxPayCheckoutPage',
