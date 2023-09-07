@@ -1,15 +1,101 @@
 <template>
     <div class="member-order">
-      <XtxTabs>
-
+      <XtxTabs v-model="activeName" @tab-click="tabClick">
+      <XtxTabsPanel
+      v-for="item in orderStatus"
+        :key="item.name"
+        :label="item.label"
+        :name="item.name">
+      </XtxTabsPanel>
       </XtxTabs>
-    </div>
+  <div class="order-list">
+    <div v-if="loading" class="loading"></div>
+    <div class="none" v-if="!loading && orderList.length === 0">暂无数据</div>
+      <OrderItem
+        v-for="item in orderList"
+        :key="item.id"
+        :order="item"
+        @on-cancel-order = "onCancelOrder(item)"
+      />
+  </div>
+  </div>
+      <!-- 订单列表 -->
+
+  <XtxPagination
+      v-if="total > requestParams.pageSize"
+      @current-change="requestParams.page=$event"
+      :total="total"
+      :page-size="requestParams.pageSize"
+      :current-page="requestParams.page"  />
+   <!-- 取消原因组件 -->
+   <OrderCancel ref="orderCancelCom" />
   </template>
   <script>
-
+import { ref, reactive, watch } from 'vue'
+import { orderStatus } from '@/api/constants'
+import OrderItem from './components/order-item'
+import { findOrderList } from '@/api/member'
+import OrderCancel from './components/order-cancel'
   export default {
-    name: 'MemberOrder'
-
+    name: 'MemberOrder',
+    components: { OrderItem, OrderCancel },
+    setup () {
+    const activeName = ref('all')
+    const requestParams = reactive({
+      page: 1,
+      pageSize: 5,
+      orderState: 0
+    })
+    const tabClick = ({ index }) => {
+      requestParams.orderState = index
+      requestParams.page = 1
+    }
+    const orderList = ref([])
+    const total = ref(0)
+    const loading = ref(true)
+    watch(requestParams, () => {
+      loading.value = true
+      findOrderList(requestParams).then(data => {
+        orderList.value = data.result.items
+        total.value = data.result.counts
+        loading.value = false
+      })
+    }, { immediate: true })
+    const useCancelOrder = () => {
+      const orderCancelCom = ref(null)
+      const onCancelOrder = (item) => {
+        orderCancelCom.value.open(item)
+      }
+      return { orderCancelCom, onCancelOrder }
+    }
+    return { activeName, tabClick, orderStatus, orderList, requestParams, total, loading, ...useCancelOrder() }
   }
+}
+
   </script>
-  <style scoped lang="less"></style>
+<style scoped lang="less">
+.member-order {
+  height: 100%;
+  background: #fff;
+}
+.order-list {
+  background: #fff;
+  padding: 20px;
+  position: relative;
+  min-height: 400px;
+}
+.loading {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(255,255,255,.9) url(../../../assets/images/loading.gif) no-repeat center;
+}
+.none {
+  height: 400px;
+  text-align: center;
+  line-height: 400px;
+  color: #999;
+}
+</style>

@@ -23,6 +23,8 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue-jsx": "^3.0.2",
+    "@vue/babel-plugin-jsx": "^1.1.5",
     "@vue/cli-plugin-babel": "~4.5.19",
     "@vue/cli-plugin-eslint": "~4.5.19",
     "@vue/cli-plugin-router": "~4.5.19",
