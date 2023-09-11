@@ -73,7 +73,7 @@
       .body {
         padding: 20px 40px;
         font-size: 16px;
-        overflow: scroll;
+        // overflow: auto;
         .icon-warning {
           color: @priceColor;
           margin-right: 3px;

@@ -15,7 +15,9 @@
         v-for="item in orderList"
         :key="item.id"
         :order="item"
-        @on-cancel-order = "onCancelOrder(item)"
+        @on-cancel = "onCancelOrder"
+        @on-delete-order="onDeleteOrder(item)"
+        @on-confirm-order="onConfirmOrder(item)"
       />
   </div>
   </div>
@@ -36,6 +38,9 @@ import { orderStatus } from '@/api/constants'
 import OrderItem from './components/order-item'
 import { findOrderList } from '@/api/member'
 import OrderCancel from './components/order-cancel'
+import { deleteOrder, confirmOrder } from '@/api/order'
+import Confirm from '@/components/library/Confirm'
+import Message from '@/components/library/Message'
   export default {
     name: 'MemberOrder',
     components: { OrderItem, OrderCancel },
@@ -53,7 +58,16 @@ import OrderCancel from './components/order-cancel'
     const orderList = ref([])
     const total = ref(0)
     const loading = ref(true)
+    const findOrderListFn = () => {
+      loading.value = true
+      findOrderList(requestParams).then(data => {
+        orderList.value = data.result.items
+        total.value = data.result.counts
+        loading.value = false
+      })
+    }
     watch(requestParams, () => {
+      findOrderListFn()
       loading.value = true
       findOrderList(requestParams).then(data => {
         orderList.value = data.result.items
@@ -61,17 +75,47 @@ import OrderCancel from './components/order-cancel'
         loading.value = false
       })
     }, { immediate: true })
-    const useCancelOrder = () => {
+    const onDeleteOrder = (item) => {
+    Confirm({ text: '您确认删除该条订单吗？' }).then(() => {
+         deleteOrder([item.id]).then(() => {
+          Message({ text: '删除订单成功', type: 'success' })
+          findOrderListFn()
+        })
+      }).catch(e => {})
+    }
+
+    return {
+ activeName,
+tabClick,
+orderStatus,
+            orderList,
+requestParams,
+total,
+            loading,
+...useCancelOrder(),
+onDeleteOrder,
+...useConfirmOrder()
+          }
+  }
+}
+export const useCancelOrder = () => {
       const orderCancelCom = ref(null)
       const onCancelOrder = (item) => {
         orderCancelCom.value.open(item)
       }
       return { orderCancelCom, onCancelOrder }
     }
-    return { activeName, tabClick, orderStatus, orderList, requestParams, total, loading, ...useCancelOrder() }
+export const useConfirmOrder = () => {
+  const onConfirmOrder = (item) => {
+    Confirm({ text: '您确认收到货吗？确认后货款将会打给卖家。' }).then(() => {
+      confirmOrder(item.id).then(() => {
+      Message({ text: '确认收货成功', type: 'success' })
+      item.orderState = 4
+    })
+    })
   }
+  return { onConfirmOrder }
 }
-
   </script>
 <style scoped lang="less">
 .member-order {
