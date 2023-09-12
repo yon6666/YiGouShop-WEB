@@ -31,6 +31,7 @@
       :current-page="requestParams.page"  />
    <!-- 取消原因组件 -->
    <OrderCancel ref="orderCancelCom" />
+   <OrderLogistics ref="logisticsOrderCom" />
   </template>
   <script>
 import { ref, reactive, watch } from 'vue'
@@ -41,11 +42,12 @@ import OrderCancel from './components/order-cancel'
 import { deleteOrder, confirmOrder } from '@/api/order'
 import Confirm from '@/components/library/Confirm'
 import Message from '@/components/library/Message'
+import OrderLogistics from './components/order-logistics'
+
   export default {
     name: 'MemberOrder',
-    components: { OrderItem, OrderCancel },
+    components: { OrderItem, OrderCancel, OrderLogistics },
     setup () {
-    const activeName = ref('all')
     const requestParams = reactive({
       page: 1,
       pageSize: 5,
@@ -85,17 +87,18 @@ import Message from '@/components/library/Message'
     }
 
     return {
- activeName,
-tabClick,
-orderStatus,
+
+            tabClick,
+            orderStatus,
             orderList,
-requestParams,
-total,
+            requestParams,
+            total,
             loading,
-...useCancelOrder(),
-onDeleteOrder,
-...useConfirmOrder()
-          }
+            onDeleteOrder,
+            ...useCancelOrder(),
+            ...useConfirmOrder(),
+            ...useLogisticsOrder()
+                      }
   }
 }
 export const useCancelOrder = () => {
@@ -105,7 +108,7 @@ export const useCancelOrder = () => {
       }
       return { orderCancelCom, onCancelOrder }
     }
-export const useConfirmOrder = () => {
+  const useConfirmOrder = () => {
   const onConfirmOrder = (item) => {
     Confirm({ text: '您确认收到货吗？确认后货款将会打给卖家。' }).then(() => {
       confirmOrder(item.id).then(() => {
@@ -115,6 +118,15 @@ export const useConfirmOrder = () => {
     })
   }
   return { onConfirmOrder }
+}
+
+// 封装逻辑-查看物流
+export const useLogisticsOrder = () => {
+    const logisticsOrderCom = ref(null)
+    const onLogisticsOrder = (item) => {
+    logisticsOrderCom.value.open(item)
+  }
+  return { onLogisticsOrder, logisticsOrderCom }
 }
   </script>
 <style scoped lang="less">
