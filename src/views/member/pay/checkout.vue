@@ -78,9 +78,11 @@
   </template>
   <script>
 import CheckoutAddress from './components/checkout-address.vue'
-import { findCheckoutInfo, createOrder } from '@/api/order'
+import { createOrder, findCheckoutInfo, findOrderRepurchase } from '@/api/order'
 import Message from '@/components/library/Message'
 import { ref, reactive } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import router from '@/router'
   export default {
     name: 'XtxPayCheckoutPage',
@@ -88,6 +90,7 @@ import router from '@/router'
       CheckoutAddress
     },
     setup () {
+        const store = useStore()
         const checkoutInfo = ref(null)
         const requestParams = reactive({
               addressId: null,
@@ -99,25 +102,32 @@ import router from '@/router'
          const changeAddress = (id) => {
             requestParams.addressId = id
             }
-          findCheckoutInfo().then(data => {
+            const route = useRoute()
+            if (route.query.orderId) {
+              findOrderRepurchase(route.query.orderId).then(data => {
                 checkoutInfo.value = data.result
-                requestParams.goods = checkoutInfo.value.goods.map(item => {
-                    return {
-                      skuId: item.skuId,
-                      count: item.count
-                    }
-                })
+        // 设置订单商品数据
+        requestParams.goods = data.result.goods.map(({ skuId, count }) => ({ skuId, count }))
             })
+          } else {
+      // 按照购物车商品结算
+      findCheckoutInfo().then(data => {
+        checkoutInfo.value = data.result
+        requestParams.goods = data.result.goods.map(({ skuId, count }) => ({ skuId, count }))
+      })
+    }
+
             const submitOrder = () => {
               if (!requestParams.addressId) {
                 return Message({ text: '请选择收货地址', type: 'error' })
               }
               createOrder(requestParams).then(data => {
                 router.push({ path: '/member/pay', query: { id: data.result.id } })
+                store.dispatch('cart/findCartList')
               })
             }
         return {
-           checkoutInfo, changeAddress, submitOrder
+           checkoutInfo, changeAddress, submitOrder, requestParams
         }
     }
   }
