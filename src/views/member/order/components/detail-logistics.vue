@@ -15,7 +15,7 @@
   import { ref } from 'vue'
   import { logisticsOrder } from '@/api/order'
   import OrderLogistics from './order-logistics'
-import { useLogisticsOrder } from '../index'
+  import { useLogisticsOrder } from '../index'
   export default {
     name: 'DetailLogistics',
     components: {
