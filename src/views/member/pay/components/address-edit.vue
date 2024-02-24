@@ -95,7 +95,7 @@
       if (formData.id) {
         editAddress(formData).then(data => {
           // 修改成功
-          Message({ text: '修改收货地址成功', type: 'success' })
+          Message({ text: '修改地址成功', type: 'success' })
           dialogVisible.value = false
           emit('on-success', formData)
        })
