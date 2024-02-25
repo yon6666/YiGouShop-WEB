@@ -1,6 +1,14 @@
 # YIGOU-project
 易购商城是一个综合品类电商平台。实现购物车，商品查看，订单管理，支付等功能。
 
+## 技术栈：
+
+- 前端框架：(Vue3 + vue-cli)
+- 状态管理：vuex，vuex-persistedstate (vuex数据持久化)
+- 表单校验：vee-validate
+- 组合api常用工具库：@vueuse/core
+- 单页路由：vue-router
+
 ## 功能细节介绍：
 
 - 首页模块：顶部通栏，吸顶导航，网站头部，左侧分类，轮播图，新鲜好物，人气推荐，热门品牌，分类商品推荐，专题推荐，网站底部。
@@ -79,3 +87,36 @@ npm run build
 ### 登录界面
 
 ![alt text](moudlefile/1.jpg)
+
+### 首页
+![alt text](moudlefile/2.png)
+![alt text](moudlefile/3.png)
+### 首页购物车
+![alt text](moudlefile/5.png)
+### 商品分类页
+6 7
+### 商品详情
+8 9
+## 商品评价
+
+## 个人中心
+
+## 我的订单
+10
+
+## 购物车
+12 14
+
+## 购物车
+
+## 地址操作
+
+## 订单提交
+
+## 订单支付
+
+
+
+
+
+
