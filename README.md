@@ -24,4 +24,4 @@ yarn lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 登录界面
-![alt text](moudlefile/1.jpg)
+![alt text](E:\GitHub\YiGouShop-WEB\moudlefile\1a.png)
