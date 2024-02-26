@@ -80,41 +80,83 @@ npm run build
 └── vite.config.ts             # vite 配置
 ```
 
-# 部分页面截取
+# **部分页面截取**
 
-
-
-### 登录界面
+### **登录界面**
 
 ![alt text](moudlefile/1.jpg)
 
-### 首页
+
+### **首页**
 ![alt text](moudlefile/2.png)
+
+
+
 ![alt text](moudlefile/3.png)
-### 首页购物车
+
+
+
+![alt text](moudlefile/4.png)
+
+
+
+![alt text](moudlefile/1a.png)
+
+
+### **首页购物车**
 ![alt text](moudlefile/5.png)
-### 商品分类页
-6 7
-### 商品详情
-8 9
-## 商品评价
 
-## 个人中心
+### **商品分类页**
 
-## 我的订单
-10
+![alt text](moudlefile/7.png)
 
-## 购物车
-12 14
+### **商品详情**
+![alt text](moudlefile/8.png)
 
-## 购物车
+![alt text](moudlefile/9.png)
 
-## 地址操作
+## **商品评价**
+![Alt text](moudlefile/24.jpg)
 
-## 订单提交
+## **个人中心**
+![Alt text](moudlefile/10.png)
 
-## 订单支付
+## **我的订单**
+![Alt text](moudlefile/11.png)
 
+## **购物车**
+![Alt text](moudlefile/14.png)
+
+
+![Alt text](moudlefile/12.png)
+
+
+![Alt text](moudlefile/13.png)
+
+
+## **地址操作**
+![Alt text](moudlefile/15.png)
+
+
+![Alt text](moudlefile/16.png)
+
+
+![Alt text](moudlefile/17.png)
+
+## **订单提交**
+![Alt text](moudlefile/18.png)
+
+
+![Alt text](moudlefile/19.png)
+
+## **订单支付**
+![Alt text](moudlefile/20.png)
+
+
+![Alt text](moudlefile/21.png)
+
+
+![Alt text](moudlefile/23.png)
 
 
 
